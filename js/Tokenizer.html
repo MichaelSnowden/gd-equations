@@ -12,12 +12,10 @@
             var old = text[i++];
             c = new Character(peek());
             return old;
-        };
-
+        }
         function peek() {
             return text[i];
-        };
-
+        }
         function token() {
             if (i >= text.length) {
                 return tokens;

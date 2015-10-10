@@ -104,7 +104,7 @@ function Character(c) {
 
 Character.prototype.is = function(type) {
     return this.type == type;
-}
+};
 
 function parse(tokens) {
     var i = 0;
@@ -262,7 +262,7 @@ Operator.define = function(keys, func, precedence) {
     for (var i = 0; i < keys.length; ++i) {
         Operator.operators[keys[i]] = operator;
     }
-}
+};
 Operator.define(["^", "pow"], "pow", 1);
 Operator.define(["*", "x", "mul"], "mul", 2);
 Operator.define(["/", "div"], "div", 2);
@@ -274,7 +274,7 @@ Operator.define(["=", "assign"], "assign", 4);
 
 Operator.get = function(key) {
     return Operator.operators[key.toLowerCase()];
-}
+};
 Operator.defined = function(key) {
     return Operator.operators[key.toLowerCase()] != undefined;
-}
+};
