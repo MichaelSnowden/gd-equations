@@ -1,0 +1,25 @@
+<script>
+    /**
+     * Wrapper class for characters
+     */
+    function Character(c) {
+        var type;
+        if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(c) != -1) {
+            type = "alphabetic";
+        } else if (" \n\r\t".indexOf(c) != -1) {
+            type = "fluff";
+        } else if ("0123456789".indexOf(c) != -1) {
+            type = "digit";
+        } else if ("(,)+-*/^='".indexOf(c) != -1) {
+            type = "punctuator";
+        } else {
+            type = "unknown";
+        }
+        this.type = type;
+        this.value = c;
+    }
+
+    Character.prototype.is = function(type) {
+        return this.type == type;
+    };
+</script>

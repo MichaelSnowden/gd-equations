@@ -1,0 +1,36 @@
+<script>
+    /**
+     * Returns the set of variables that an expression is dependent on
+     */
+    function annotate(expression) {
+        var parameters = {};
+        var leaves = []
+        getLeaves(expression);
+        for (var i = 0; i < leaves.length; ++i) {
+            var leaf = leaves[i];
+            if (leaf.type == "Variable") {
+                if (!Constants.defined[leaf.value]) {
+                    parameters[leaf.value] = true;
+                }
+            }
+        }
+
+        return Object.keys(parameters).sort();
+
+        function getLeaves(node) {
+            if (node.leaf == true) {
+                leaves.push(node);
+                return;
+            }
+            var args = node.args;
+            if (args == undefined) {
+                Logger.log("Undefined Args!");
+                Logger.log(node);
+            }
+            for (var i = 0; i < args.length; ++i) {
+                var arg = args[i];
+                getLeaves(arg);
+            }
+        }
+    }
+</script>

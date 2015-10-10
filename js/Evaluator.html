@@ -1,0 +1,31 @@
+<script>
+    /**
+     * Returns the result of evaluating an expression tree
+     */
+    var Evaluator = {}
+    Evaluator.evaluate = function(node, variables) {
+        Logger.log(node, "Evaluating");
+        if (node.leaf) {
+            if (node.type == "Number") {
+                return node.value;
+            }
+            if (node.type == "Variable") {
+                if (Constants.get[node.value]) {
+                    return Constants.get[node.value];
+                }
+                return variables[node.value];
+            }
+            return undefined;
+        }
+        if (node.type == "Function") {
+            var args = [];
+            for (var i = 0; i < node.args.length; ++i) {
+                var arg = node.args[i];
+                arg = Evaluator.evaluate(arg, variables);
+                args.push(arg);
+            }
+            return FunctionDispatcher.dispatch(node.func, args);
+        }
+    };
+
+</script>

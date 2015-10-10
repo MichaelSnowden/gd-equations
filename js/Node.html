@@ -1,0 +1,41 @@
+<script>
+    function Node() {}
+    Node.prototype.evaluate = function(variables) {
+        if (this.leaf) {
+            if (this.type == "Number") {
+                return this.value;
+            }
+            if (this.type == "Variable") {
+                if (Constant.constants[this.value]) {
+                    return Constant.constants[this.value];
+                }
+                return variables[this.value];
+            }
+            return undefined;
+        }
+        if (this.type == "Function") {
+            var args = [];
+            for (var i = 0; i < this.args.length; ++i) {
+                var arg = this.args[i];
+                arg = Evaluator.evaluate(arg, variables);
+                args.push(arg);
+            }
+            return FunctionDispatcher.dispatch(this.func, args);
+        }
+    };
+    Node.prototype.stringify = function() {
+        if (this.leaf) {
+            return String(this.value);
+        }
+        var str = "";
+        if (this.type == "Function") {
+            var args = [];
+            for (var i = 0; i < this.args.length; ++i) {
+                args.push(this.args[i].stringify());
+            }
+            str += this.func + "(" + args.join(",") + ")";
+            return str;
+        }
+        return undefined;
+    };
+</script>

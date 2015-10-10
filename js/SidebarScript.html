@@ -1,0 +1,103 @@
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>
+    var equations;
+
+    $(function() {
+        Logger.on = false;
+        var equationSelector = $("#equations");
+        equationSelector.change(function() {
+            var i = this.value;
+            selectEquation(i);
+        });
+        refresh();
+    });
+
+    function finishedLoading(results) {
+        equations = [];
+        for (var i = 0; i < results.length; ++i) {
+            var eq = {};
+            eq.stringified = results[i];
+            eq.tokenized = tokenize(eq.stringified);
+            eq.parsed = parse(eq.tokenized);
+            eq.expression = eq.parsed.args[1];
+            eq.parameters = annotate(eq.expression);
+            if (eq.parameters.length == 0) {
+                Constants.define(eq.parsed.args[0], Evaluator.evaluate(eq.expression));
+            }
+            equations.push(eq);
+        }
+        selectEquation(0);
+        var equationSelector = $("#equations");
+        equationSelector.empty();
+        for (var i = 0; i < equations.length; ++i) {
+            $("<option>", {
+                text: "Equation " + (i + 1),
+                value: i
+            }).appendTo(equationSelector);
+        }
+    }
+
+    function refresh() {
+        google.script.run.withSuccessHandler(finishedLoading).getEquations(true);
+    }
+
+    function selectEquation(i) {
+        highlightEquation(i);
+        displayParameters(i);
+        evaluateEquation(i);
+    }
+
+    function highlightEquation(i) {
+        google.script.run.highlightEquationAtIndex(i);
+    }
+
+    function displayParameters(i) {
+        var equation = equations[i];
+        var parameters = equation.parameters;
+        var parametersDiv = $("#parameters");
+        var table = $("<table>");
+        parametersDiv.empty();
+        for (var j = 0; j < parameters.length; ++j) {
+            var key = parameters[j];
+            var row = $("<tr>");
+            var td1 = $("<td>");
+            var label = $("<label>", {
+                "for": "variable_" + key,
+                text: key
+            });
+            var td2 = $("<td>");
+            var input = $("<input>", {
+                id: "variable_" + key,
+                class: "variable-input",
+                "data-variable": key,
+                value: 1
+            });
+            input.on('keyup paste',function(e){
+                evaluateEquation(i);
+            });
+            var p = $("<p>", {
+                text: " = "
+            });
+            input.appendTo(p);
+            label.appendTo(td1);
+            p.appendTo(td2);
+            td1.appendTo(row);
+            td2.appendTo(row);
+            row.appendTo(table);
+            table.appendTo(parametersDiv);
+        }
+    }
+
+    function evaluateEquation(i) {
+        var equation = equations[i];
+        var expression = equation.expression;
+        var args = {};
+        $(".variable-input").each(function() {
+            var key = $(this).attr("data-variable");
+            var value = parseFloat($(this).val());
+            args[key] = value;
+        });
+        var result = Evaluator.evaluate(expression, args);
+        $("#result").html(String(result));
+    }
+</script>

@@ -1,0 +1,12 @@
+<script>
+    var Logger = {};
+    Logger.on = true;
+    Logger.log = function(jso, message) {
+        if (!Logger.on) return;
+        console.log(message);
+        console.log(Logger.prettify(jso));
+    };
+    Logger.prettify = function(jso) {
+        return JSON.stringify(jso, null, 2);
+    };
+</script>

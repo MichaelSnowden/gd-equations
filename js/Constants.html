@@ -1,0 +1,19 @@
+<script>
+    var Constants = {};
+    Constants.list = {};
+    Constants.define = function(constant, value) {
+        Constants.list[constant] = value;
+    };
+    Constants.undefine = function(constant) {
+        Constants.list[constant] = undefined;
+    };
+    Constants.defined = function(key) {
+        return Constants.list[key] != undefined;
+    };
+    Constants.undefined = function(key) {
+        return Constants.list[key] == undefined;
+    };
+    Constants.get = function(key) {
+        return Constants.list[key];
+    };
+</script>

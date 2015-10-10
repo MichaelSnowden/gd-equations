@@ -1,0 +1,46 @@
+<script>
+    /**
+     * Because eval doesn't work in strict mode, a dispatcher is needed to convert strings into functions
+     */
+    var FunctionDispatcher = {};
+    FunctionDispatcher.dispatch = function(func, args) {
+        func = func.toLowerCase();
+        var F = Functions;
+        switch (func) {
+            case "frac":
+                return F.frac(args);
+            case "superscript":
+                return F.superscript(args);
+            case "add":
+                return F.add(args);
+            case "sub":
+                return F.sub(args);
+            case "mul":
+                return F.mul(args);
+            case "div":
+                return F.div(args);
+            case "pow":
+                return F.pow(args);
+            case "neg":
+                return F.neg(args);
+            case "not":
+                return F.not(args);
+            case "and":
+                return F.and(args);
+            case "or":
+                return F.or(args);
+            case "cos":
+                return F.cos(args);
+            case "sin":
+                return F.sin(args);
+            case "tan":
+                return F.tan(args);
+            case "sqrt":
+                return F.sqrt(args);
+            case "ln":
+                return F.ln(args);
+            case "exp":
+                return F.exp(args);
+        }
+    };
+</script>

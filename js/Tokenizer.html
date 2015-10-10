@@ -1,0 +1,71 @@
+<script>
+    /**
+     * Converts a stringified equation into a token stream
+     */
+
+    function tokenize(text) {
+        var tokens = [];
+        var i = 0;
+        var c;
+
+        function pop() {
+            var old = text[i++];
+            c = new Character(peek());
+            return old;
+        };
+
+        function peek() {
+            return text[i];
+        };
+
+        function token() {
+            if (i >= text.length) {
+                return tokens;
+            }
+            var type = undefined;
+            var value = "";
+            c = new Character(peek());
+
+            function digit() {
+                if (c.is("digit")) {
+                    value += pop();
+                    digit();
+                }
+            }
+
+            function character() {
+                if (c.is("alphabetic")) {
+                    value += pop();
+                    character();
+                }
+            }
+
+            if (c.is("fluff")) {
+                pop();
+                token();
+            } else if (c.is("digit")) {
+                type = "Number";
+                digit();
+                if (peek() == ".") {
+                    value += pop();
+                    digit();
+                }
+                tokens.push({type: type, value: parseFloat(value)});
+                token();
+            } else if(c.is("alphabetic")) {
+                type = "Identifier";
+                character();
+                digit();
+                tokens.push({type: type, value: value});
+                token();
+            } else if(c.is("punctuator")) {
+                tokens.push({type: "Punctuator", value: pop()});
+                token();
+            }
+        }
+
+        token();
+        return tokens;
+    }
+
+</script>

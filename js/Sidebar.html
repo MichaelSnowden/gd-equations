@@ -1,0 +1,31 @@
+<?!= include('Stylesheet'); ?>    <!--CSS-->
+<?!= include('SidebarScript'); ?> <!--JS-->
+
+<!-- Below is the HTML code that defines the sidebar element structure. -->
+<div class="sidebar">
+    <div class="block" id="sidebar-button-bar">
+        <select id="equations"></select>
+        <button class="action" onclick="refresh()">Refresh</button>
+    </div>
+    <h3><b>Parameters</b></h3>
+    <div id="parameters"></div>
+    <h3><b>Result</b></h3>
+    <pre id="result"></pre>
+</div>
+
+
+<!-- Include all of my scripts, which are HTML files-->
+<?!= include('Tokenizer'); ?>
+<?!= include('Parser'); ?>
+<?!= include('Annotator'); ?>
+<?!= include('Evaluator'); ?>
+<?!= include('FunctionDispatcher'); ?>
+<?!= include('Logger'); ?>
+<?!= include('Operators'); ?>
+<?!= include('Character'); ?>
+<?!= include('Character'); ?>
+<?!= include('Constants'); ?>
+<?!= include('Functions'); ?>
+<?!= include('FunctionNode'); ?>
+<?!= include('VariableNode'); ?>
+<?!= include('Node'); ?>
